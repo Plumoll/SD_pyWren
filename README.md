@@ -1,30 +1,34 @@
 # SD_pyWren
 
-# Task 1: Foundations of distributed systems
-[![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)](https://www.python.org/downloads/release/python-370/)
+# Task 2: Foundations of distributed systems
+[![Python 3.7](https://img.shields.io/badge/python-3.6%20%7C%203.7-blue.svg)](https://www.python.org/downloads/release/python-370/)
+[![PyWrenIMB 1.0.12](https://img.shields.io/badge/pywren--ibm--cloud-v1.0.12-blue.svg)](https://github.com/pywren/pywren-ibm-cloud)
 
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 ### Prerequisites
 
-Is requiered a configuration file (in .yaml format) located in the root direcory of the project, and named ibm_cloud_config in order to have access to those services.
-ibm_cloud_config follows the following format:
+Is requiered a configuration file (in .yaml format) located in the root direcory of the project, and named .pywren_config in order to have access to those services. Should be located at the user's home directory (e.g. /Users/user_name).
+
+.pywren_config follows the following format:
 
 ```
+pywren:
+    storage_bucket  : BUCKET_NAME
+    
 ibm_cf:
-    endpoint    : CF_API_ENDPOINT
-    namespace   : CF_HOST
-    api_key     : CF_API_KEY
+    endpoint        : CF_API_ENDPOINT
+    namespace       : CF_HOST
+    api_key         : CF_API_KEY
 
 ibm_cos:
-    endpoint   : COS_API_ENDPOINT
-    access_key : ACCESS_KEY
-    secret_key : SECRET_KEY
-    bucket     : Bucket
+    endpoint        : COS_API_ENDPOINT
+    access_key      : ACCESS_KEY
+    secret_key      : SECRET_KEY
 
 rabbitmq:
-    url         : URL
+    url             : URL
 ```
 
 yaml is necessary to read the configuration file, and it can be intalled like this:
@@ -52,13 +56,7 @@ python3 multiple_queue_cs.py
 
 ## Our project
 
-### Important points
-* Tomato
-* P2
-* P3
-* P4
-* P5
-
+Consider checking the documentation file for more info.
 
 ## Built With
 

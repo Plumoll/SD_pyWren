@@ -51,8 +51,9 @@ sudo pip3 install pywren-ibm-cloud
 The program can be executed with the following command:
     
 ```
-python3 multiple_queue_cs.py
+python3 multiple_queue_cs.py [num_workers]
 ```
+```num_workers``` is the number of functions working as a worker, if this value is not specified will be 10 by default.
 
 ## Our project
 

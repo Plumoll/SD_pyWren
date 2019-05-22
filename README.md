@@ -28,7 +28,7 @@ ibm_cos:
     secret_key      : SECRET_KEY
 
 rabbitmq:
-    url             : URL
+    amqp_url        : URL
 ```
 
 yaml is necessary to read the configuration file, and it can be intalled like this:

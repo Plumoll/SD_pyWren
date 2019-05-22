@@ -3,9 +3,10 @@ magi tell
 guillem frisach
 """
 import pywren_ibm_cloud as pywren
-import yaml
 import pika
 import random
+import json
+import os
 
 #done but not tested
 class callback_rabbit_leader:
@@ -64,25 +65,27 @@ class callback_rabbit_slave:
         return self.__active
 
 def my_function_leader(num_slaves):
-    url = 'amqp://xbjymxoa:jdlKHnEzsJ3woxT8wHGtox-8PI7kJXwW@caterpillar.rmq.cloudamqp.com/xbjymxoa'
+    pywren_Conf =  json.loads(os.environ.get('PYWREN_CONFIG', ''))
+    url = pywren_Conf['rabbitmq']['amqp_url']
     callback = callback_rabbit_leader(num_slaves)
     params = pika.URLParameters(url)
     connection = pika.BlockingConnection(params)
     channel = connection.channel()
-    channel.queue_declare('queue_leaderxxx2')
+    channel.queue_declare('queue_leaderxxx3')
     channel.exchange_declare(exchange='sd', exchange_type='fanout')
     for id in range(0, num_slaves):
-        queue_id = f'queue{id}xxx2'
+        queue_id = f'queue{id}xxx3'
         channel.queue_declare(queue_id)
         channel.queue_bind(exchange='sd', queue=queue_id)
     channel.basic_publish(exchange='sd', routing_key='', body=str(num_slaves))
-    channel.basic_consume(callback, queue='queue_leaderxxx2', no_ack=True)
+    channel.basic_consume(callback, queue='queue_leaderxxx3', no_ack=True)
     channel.start_consuming()
     return callback.getNumerao()
 
 def my_function_slave(id):
-    queue_id = f'queue{id}xxx2'
-    url = 'amqp://xbjymxoa:jdlKHnEzsJ3woxT8wHGtox-8PI7kJXwW@caterpillar.rmq.cloudamqp.com/xbjymxoa'
+    queue_id = f'queue{id}xxx3'
+    pywren_Conf =  json.loads(os.environ.get('PYWREN_CONFIG', ''))
+    url = pywren_Conf['rabbitmq']['amqp_url']
     params = pika.URLParameters(url)
     connection = pika.BlockingConnection(params)
     channel = connection.channel()
@@ -96,7 +99,7 @@ def my_function_slave(id):
     for _ in range(0, callback.get_num_messages()):
         #print(f'numero iteracio: {_}')
         if(callback.is_active()):
-            channel.basic_publish(exchange='', routing_key='queue_leaderxxx2', body=str(id))
+            channel.basic_publish(exchange='', routing_key='queue_leaderxxx3', body=str(id))
         channel.basic_consume(callback, queue=queue_id, no_ack=True)
         channel.start_consuming()
 
@@ -107,7 +110,7 @@ def my_function_slave(id):
 if __name__ == '__main__':
     #load config file
     pw = pywren.ibm_cf_executor(rabbitmq_monitor=True)
-    pw.map(my_function_slave, range(19))
+    pw.map(my_function_slave, range(3))
     pw1 = pywren.ibm_cf_executor(rabbitmq_monitor=True)
-    pw1.call_async(my_function_leader, 19)
+    pw1.call_async(my_function_leader, 3)
     print(pw.get_result())

@@ -1,7 +1,8 @@
 # SD_pyWren
 
-# Task 1: Foundations of distributed systems
-[![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)](https://www.python.org/downloads/release/python-370/)
+# Task 2: Foundations of distributed systems
+[![Python 3.7](https://img.shields.io/badge/python-3.6%20%7C%203.7-blue.svg)](https://www.python.org/downloads/release/python-370/)
+[![PyWrenIMB 1.0.12](https://img.shields.io/badge/pywren--ibm--cloud-v1.0.12-blue.svg)](https://github.com/pywren/pywren-ibm-cloud)
 
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.

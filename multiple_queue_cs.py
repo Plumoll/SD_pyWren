@@ -14,17 +14,17 @@ class callback_rabbit_master:
     def __init__(self, max_messages):
         self.__active_slaves = max_messages
         self.__workers_id = []
-        self.__num_messages = 0
+        self.__num_slaves = 0
     def __call__(self, ch, method, properties, body):
-        self.__num_messages += 1
+        self.__num_slaves += 1
         self.__workers_id.append(int(body.decode('UTF-8')))
         #num = int(body.decode('UTF-8'))
         #print(f'missatge callback master: {num}')
-        if self.__num_messages is self.__active_slaves:
+        if self.__num_slaves is self.__active_slaves:
             #print(f'result: {self.__workers_id}')
             id = random.randint(0, len(self.__workers_id)-1)
             id = -self.__workers_id[id]
-            self.__num_messages = 0
+            self.__num_slaves = 0
             self.__active_slaves -= 1
             self.__workers_id = []
             ch.basic_publish(exchange='sd', routing_key='', body=str(id))
@@ -35,15 +35,15 @@ class callback_rabbit_master:
 class callback_rabbit_slave:
     def __init__(self, id):
         self.__result = [f'({id})']
-        self.__num_messages = -1
+        self.__num_slaves = -1
         self.__id = id
         self.__active = True
     def __call__(self, ch, method, properties, body):
         num = int(body.decode('UTF-8'))
         #print(f'missatge callback slave: {num}')
         #id
-        if self.__num_messages is -1:
-            self.__num_messages = num
+        if self.__num_slaves is -1:
+            self.__num_slaves = num
             ch.stop_consuming()
 
         elif num <= 0:
@@ -58,8 +58,8 @@ class callback_rabbit_slave:
 
     def get_result(self):
         return self.__result
-    def get_num_messages(self):
-        return self.__num_messages
+    def get_num_slaves(self):
+        return self.__num_slaves
     def is_active(self):
         return self.__active
 
@@ -95,7 +95,7 @@ def my_function_slave(id):
     channel.basic_consume(callback, queue=queue_id, no_ack=True)
     channel.start_consuming()
 
-    for _ in range(0, callback.get_num_messages()):
+    for _ in range(0, callback.get_num_slaves()):
         #print(f'numero iteracio: {_}')
         if(callback.is_active()):
             channel.basic_publish(exchange='', routing_key='queue_masterxxx3', body=str(id))

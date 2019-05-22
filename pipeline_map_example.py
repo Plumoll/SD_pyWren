@@ -16,7 +16,7 @@ class callback_rabbit_leader:
     def __call__(self, ch, method, properties, body):
         self.__num_messages += 1
         self.__numerao.append(int(body.decode('UTF-8')))
-        num = int(body.decode('UTF-8'))
+        #num = int(body.decode('UTF-8'))
         #print(f'missatge callback leader: {num}')
         if self.__num_messages is self.__active_slaves:
             #print(f'numerao: {self.__numerao}')

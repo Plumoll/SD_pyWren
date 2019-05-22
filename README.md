@@ -28,7 +28,7 @@ ibm_cos:
     secret_key      : SECRET_KEY
 
 rabbitmq:
-    url             : URL
+    amqp_url        : URL
 ```
 
 yaml is necessary to read the configuration file, and it can be intalled like this:
@@ -51,8 +51,9 @@ sudo pip3 install pywren-ibm-cloud
 The program can be executed with the following command:
     
 ```
-python3 multiple_queue_cs.py
+python3 multiple_queue_cs.py [num_workers]
 ```
+```num_workers``` is the number of functions working as a worker, if this value is not specified will be 10 by default.
 
 ## Our project
 

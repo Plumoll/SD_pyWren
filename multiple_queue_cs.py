@@ -70,19 +70,20 @@ def my_function_master(num_slaves):
     params = pika.URLParameters(url)
     connection = pika.BlockingConnection(params)
     channel = connection.channel()
-    channel.queue_declare('queue_masterxxx3')
+    channel.queue_declare('queue_master')
     channel.exchange_declare(exchange='sd', exchange_type='fanout')
     for id in range(0, num_slaves):
-        queue_id = f'queue{id}xxx3'
+        queue_id = f'queue{id}'
         channel.queue_declare(queue_id)
         channel.queue_bind(exchange='sd', queue=queue_id)
     channel.basic_publish(exchange='sd', routing_key='', body=str(num_slaves))
-    channel.basic_consume(callback, queue='queue_masterxxx3', no_ack=True)
+    channel.basic_consume(callback, queue='queue_master', no_ack=True)
     channel.start_consuming()
+    channel.queue_delete('queue_master')
     return []
 
 def my_function_slave(id):
-    queue_id = f'queue{id}xxx3'
+    queue_id = f'queue{id}'
     pywren_Conf =  json.loads(os.environ.get('PYWREN_CONFIG', ''))
     url = pywren_Conf['rabbitmq']['amqp_url']
     params = pika.URLParameters(url)
@@ -98,10 +99,10 @@ def my_function_slave(id):
     for _ in range(0, callback.get_num_slaves()):
         #print(f'numero iteracio: {_}')
         if(callback.is_active()):
-            channel.basic_publish(exchange='', routing_key='queue_masterxxx3', body=str(id))
+            channel.basic_publish(exchange='', routing_key='queue_master', body=str(id))
         channel.basic_consume(callback, queue=queue_id, no_ack=True)
         channel.start_consuming()
-
+    channel.queue_delete(queue_id)
     return callback.get_result()
 
 

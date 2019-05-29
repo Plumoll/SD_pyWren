@@ -5,7 +5,9 @@
 [![PyWrenIMB 1.0.12](https://img.shields.io/badge/pywren--ibm--cloud-v1.0.12-blue.svg)](https://github.com/pywren/pywren-ibm-cloud)
 
 ## Getting Started
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+These instructions will get you a copy of the project up and running on your local machine. For development and testing purposes.
+
+This project is an evaluative task for "Sistemes Distribuits" (Distibuted systems), a subject from Universitat Rovira i Virgili's Grau en Enginyeria Informàtica.
 
 ### Prerequisites
 
@@ -57,7 +59,7 @@ python3 multiple_queue_cs.py [num_workers]
 
 ## Our project
 
-Consider checking the documentation file for more info.
+Consider checking the [documentation](SD_pyWren_documentation.pdf) file for more info.
 
 ## Built With
 
